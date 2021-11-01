@@ -1,0 +1,20 @@
+name: Show where files are
+
+on:
+  push:
+
+jobs:
+
+  Show files:
+
+    runs-on: ubuntu-latest
+
+    steps:
+     - uses: actions/checkout@v2
+     
+     - name: Show all files
+       run: |
+         echo Your workspace files are here - $(pwd)
+         echo This is the list of all files:
+         ls -la
+       

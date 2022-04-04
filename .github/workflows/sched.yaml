@@ -1,0 +1,22 @@
+on:
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '*/30 * * * *'
+  workflow_dispatch:
+  
+jobs:
+
+  CallAu:
+
+    runs-on: ubuntu-latest
+
+    steps:
+     
+     - name: Send
+       run: |
+         WORD=$(curl https://random-word-api.herokuapp.com/word\?number\=1)
+         METHOD=GET
+         if [ "$(($RANDOM % 2))" = "1" ]; then
+            METHOD=POST
+         fi
+         curl -X$METHOD 13.53.188.115:8080/$WORD

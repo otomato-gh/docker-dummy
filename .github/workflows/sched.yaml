@@ -14,7 +14,7 @@ jobs:
      
      - name: Send
        run: |
-         WORD=$(curl https://random-word-api.herokuapp.com/word\?number\=1)
+         WORD=$(curl https://random-word-api.herokuapp.com/word\?number\=1 | | sed 's/\[\"//g' | sed 's/\"\]//g')
          METHOD=GET
          if [ "$(($RANDOM % 2))" = "1" ]; then
             METHOD=POST

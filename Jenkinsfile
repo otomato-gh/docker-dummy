@@ -4,36 +4,22 @@ pipeline {
     stages {
         stage ('Clone') {
             steps {
-                checkout scm
+                checkout([
+            $class: 'GitSCM',
+            branches: scm.branches,
+            extensions: scm.extensions + [[$class: 'LocalBranch']],
+        ])
             }
         }
 
-        stage ('Build docker image') {
+        stage ('Git info') {
             steps {
                 script {
-                    docker.build('playtikatraining.jfrog.io/default-docker-local/alpine-curl:latest')
+                    sh 'git fetch && git show-branch'
                 }
             }
         }
 
-        stage ('Push image to Artifactory') {
-            steps {
-                rtDockerPush(
-                    serverId: "Artifactory",
-                    image: 'playtikatraining.jfrog.io/default-docker-local/alpine-curl:latest',
-                    targetRepo: 'default-docker-local',
-                    // Attach custom properties to the published artifacts:
-                    properties: 'project-name=docker-dummy;status=testing'
-                )
-            }
-        }
-
-        stage ('Publish build info') {
-            steps {
-                rtPublishBuildInfo (
-                    serverId: "Artifactory"
-                )
-            }
-        }
+        
     }
 }

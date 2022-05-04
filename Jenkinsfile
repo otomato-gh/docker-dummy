@@ -2,13 +2,8 @@ pipeline {
     agent any
 
     stages {
-        stage ('Clone') {
             steps {
-                checkout([
-            $class: 'GitSCM',
-            branches: scm.branches,
-            extensions: scm.extensions + [[$class: 'LocalBranch']],
-        ])
+              checkout scm
             }
         }
 
@@ -18,6 +13,7 @@ pipeline {
                     sh '''
                         git show-branch | grep '*' | grep -v "$(git rev-parse --abbrev-ref HEAD)" | head -n1 | sed "s/.*\\[\\(.*\\)\\].*/\\1/" | sed "s/[\\^~].*//"
                     '''
+                    echo "more testing"
                 }
             }
         }

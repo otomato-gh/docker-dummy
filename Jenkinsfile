@@ -4,6 +4,9 @@ pipeline {
     stages {
         stage ('Clone') {
             steps {
+                script{
+                    cleanWs()
+                }
               checkout scm
             }
         }
@@ -12,7 +15,8 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        git show-branch | grep '*' | grep -v "$(git rev-parse --abbrev-ref HEAD)" | head -n1 | sed "s/.*\\[\\(.*\\)\\].*/\\1/" | sed "s/[\\^~].*//"
+                        PARENT=`git log --pretty=oneline --decorate | grep 'origin/heads' | grep -v HEAD | head -n1 |  sed "s/.*origin\\/heads\\/\\(.*\\)) .*/\\1/"`
+                        echo PARENT is $PARENT
                     '''
                     echo "more testing"
                 }

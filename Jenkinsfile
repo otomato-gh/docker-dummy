@@ -11,7 +11,7 @@ pipeline {
         stage ('Build docker image') {
             steps {
                 script {
-                    docker.build('playtikatraining.jfrog.io/default-docker-local/alpine-curl:latest')
+                    docker.build('otomato.jfrog.io/default-docker-local/alpine-curl:latest')
                 }
             }
         }
@@ -20,7 +20,7 @@ pipeline {
             steps {
                 rtDockerPush(
                     serverId: "Artifactory",
-                    image: 'playtikatraining.jfrog.io/default-docker-local/alpine-curl:latest',
+                    image: 'otomato.jfrog.io/default-docker-local/alpine-curl:latest',
                     targetRepo: 'default-docker-local',
                     // Attach custom properties to the published artifacts:
                     properties: 'project-name=docker-dummy;status=testing'
